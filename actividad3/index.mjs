@@ -10,43 +10,38 @@ const app = http.createServer(async (peticion, respuesta) => {
 
     if (peticion.method === 'GET') {
 
-     
-      if (peticion.url === '/usuarios') {
+     if (peticion.url === '/usuarios') {
 
-        const respuesta = await fetch('https://api.escuelajs.co/api/v1/users')
-        const datos = await respuesta.json()
+  const resFetch = await fetch('https://api.escuelajs.co/api/v1/users')
+  const datos = await resFetch.json()
 
-        await fsp.writeFile(filePath, JSON.stringify(datos, null, 2))
+  await fsp.writeFile(filePath, JSON.stringify(datos, null, 2))
 
-        const archivo = await fsp.readFile(filePath, 'utf-8')
+  const archivo = await fsp.readFile(filePath, 'utf-8')
 
-        respuesta.statusCode = 200
-        
-        respuesta.setHeader('Content-Type', 'application/json')
-        return respuesta.end(archivo)
-      }
-
+  respuesta.statusCode = 200
+  respuesta.setHeader('Content-Type', 'application/json')
+  return respuesta.end(archivo)
+}
       
-      if (peticion.url === '/usuarios/filtrados.') {
-        try {
-          const archivo = await fsp.readFile(filePath, 'utf-8')
-          const usuarios = JSON.parse(archivo)
+    if (peticion.url === '/usuarios/filtrados') {
+  try {
+    const archivo = await fsp.readFile(filePath, 'utf-8')
+    const usuarios = JSON.parse(archivo)
 
-          const filtrados = usuarios.filter(u => u.id < 10)
+    const filtrados = usuarios.filter(u => u.id < 10)
 
-          respuesta.statusCode = 200
+    respuesta.statusCode = 200
+    respuesta.setHeader('Content-Type', 'application/json')
 
+    return respuesta.end(JSON.stringify(filtrados, null, 2))
 
-          respuesta.setHeader('Content-Type', 'application/json')
-
-          return respuesta.end('filtrados')
-
-        } catch (error) {
-          respuesta.statusCode = 400
-          return respuesta.end('Primero ejecutar /usuarios')
-        }
-      }
-    }
+  } catch (error) {
+    respuesta.statusCode = 400
+    return respuesta.end('Primero ejecutar /usuarios')
+  }
+}
+}
 
     // fallback
     respuesta.statusCode = 404

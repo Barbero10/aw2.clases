@@ -1,15 +1,9 @@
-###----
- # GET-IES 
 
- GET https://ies21.edu.ar/
-
-### GET suma
-GET http://localhost:3000/suma
-
-### GET usuarios
+###GET usuarios
 GET http://localhost:3000/usuarios
 
-### GET filtrados
+###---
+###GET filtrados
 GET http://localhost:3000/usuarios/filtrados
 
 
